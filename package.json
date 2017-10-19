@@ -1,6 +1,6 @@
 {
   "name": "@functionalfoundry/await-url",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Wait for a given URL to continue.",
   "homepage": "https://github.com/sholladay/await-url",
   "main": "index.js",
