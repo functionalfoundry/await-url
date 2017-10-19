@@ -15,9 +15,8 @@ const awaitUrl = (url, option) => {
     const attempt = async tries => {
       const repeat = () => setTimeout(attempt, config.interval, tries - 1)
 
-      let res = undefined
       try {
-        res = await got(url, {
+        const res = await got(url, {
           followRedirect: false,
           timeout: {
             connect: 10000,
@@ -25,19 +24,19 @@ const awaitUrl = (url, option) => {
             request: 10000,
           },
         })
+        if (res.statusCode === 200) {
+          resolve()
+        } else if (tries > 1) {
+          repeat()
+        } else {
+          reject(new RangeError(`Expected 200 response but got ${res.statusCode}`))
+        }
       } catch (error) {
         if (tries > 1) {
           repeat()
         } else {
           reject(new RangeError('Expected 200 response but failed to connect'))
         }
-      }
-      if (res && res.statusCode === 200) {
-        resolve()
-      } else if (tries > 1) {
-        repeat()
-      } else {
-        reject(new RangeError(`Expected 200 response but got ${res.statusCode}`))
       }
     }
 
