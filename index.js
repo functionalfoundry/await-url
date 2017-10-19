@@ -7,6 +7,7 @@ const awaitUrl = (url, option) => {
     {
       tries: 150,
       interval: 1200,
+      logTries: false,
     },
     option
   )
@@ -16,6 +17,9 @@ const awaitUrl = (url, option) => {
       const repeat = () => setTimeout(attempt, config.interval, tries - 1)
 
       try {
+        if (config.logTries) {
+          console.log('Attempt', config.tries - tries + 1)
+        }
         const res = await got(url, {
           followRedirect: false,
           timeout: {
